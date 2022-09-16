@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using AIMLbot;
 using DarrenLee.Translator;
 using Google.Cloud.Translation.V2;
@@ -29,27 +31,14 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
+
+
         }
 
-        public bool test()
-        {
-            try
-            {
-                string address = $@"http://www.google.com";
-                WebRequest request1 = WebRequest.Create(address);
-                WebResponse response = request1.GetResponse();
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-            return true;
-        }
 
         private string TranslateToEnglish(string text)
         {
-            var client = TranslationClient.CreateFromApiKey("AIzaSyC1gksuh6zdF1v-usvS4C90mZU5C2VRL5I");
+            var client = TranslationClient.CreateFromApiKey("AIzaSyAaThOnUeV-iuFeTCVz1KCtBsMPLbvv7jY");
             var entext = client.TranslateText(text, LanguageCodes.English, LanguageCodes.Azerbaijani);
             return entext.TranslatedText;
 
@@ -57,13 +46,12 @@ namespace WpfApp2
 
         private string TranslateToAzerbaijani(string text)
         {
-            var client = TranslationClient.CreateFromApiKey("AIzaSyC1gksuh6zdF1v-usvS4C90mZU5C2VRL5I");
+            var client = TranslationClient.CreateFromApiKey("AIzaSyAaThOnUeV-iuFeTCVz1KCtBsMPLbvv7jY");
             var azText = client.TranslateText(text, LanguageCodes.Azerbaijani, LanguageCodes.English);
             return azText.TranslatedText;
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Bot AI = new Bot();
@@ -77,36 +65,40 @@ namespace WpfApp2
             Result result = AI.Chat(request);
             string azeText = TranslateToAzerbaijani(result.Output);
 
+            MessageUC messageUC = new MessageUC();
+            messageUC.MessageText = myTxtBox.Text;
+            int l = myTxtBox.Text.Length;
+
+            if (myTxtBox.Text.Length > 14)
+            {
+                for (int i = 0; i < l / 14; i++)
+                {
+                    messageUC.Height += 10;
+                    messageUC.textBlock.Height += 45;
+                }
+            }
+            messageUC.HorizontalAlignment = HorizontalAlignment.Right;
+            stack.Children.Add(messageUC);
+
 
             MessageUC myMessage = new MessageUC();
-            myMessage.messageTxt.Text=myTxtBox.Text;
-            myGrid.Children.Add(myMessage);
-            Canvas.SetLeft(myMessage, 250);
-            //Canvas.SetTop(myGrid, Y);
+            myMessage.MessageText = azeText;
+            int L = azeText.Length;
+            
+            if (myTxtBox.Text.Length > 14)
+            {
+                for (int i = 0; i < L / 14; i++)
+                {
+                    myMessage.Height += 10;
+                    myMessage.textBlock.Height += 45;
+                }
+            }
+            myMessage.HorizontalAlignment = HorizontalAlignment.Left;
+            stack.Children.Add(myMessage);
 
 
-            //MessageUC messageUC = new MessageUC();
-            //messageUC.messageTxt.Text = azeText;
-            //myGrid.Children.Add(messageUC);
-            //Canvas.SetLeft(myGrid, 400);
-            //Canvas.SetTop(myGrid, Y+10);
-
-
-           // myLabel.Content =azeText;
-
-
+            myTxtBox.Text = "";
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (test())
-            {
-                this.Title = "Connection Exist";
-            }
-            else
-            {
-                this.Title = "No Connection";
-            }
-        }
     }
 }

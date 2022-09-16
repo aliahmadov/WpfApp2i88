@@ -6,7 +6,11 @@
      xmlns:local="clr-namespace:WpfApp2"
       xmlns:uc="namespace:WpfApp2.MessageUC"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="500" Loaded="Window_Loaded">
+        Name="mainWindow"
+        Title="MainWindow" Height="650" Width="515">
+
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
@@ -24,32 +28,20 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1">
-            <ScrollViewer>
+        <ScrollViewer  Grid.Row="1">
+            <StackPanel Name="stack" Orientation="Vertical" Height="10000"
+                            Width="485" Grid.Row="1" 
+                        >
 
-                <Canvas>
-                    <Grid x:Name="myGrid" Grid.Row="1" >
+            </StackPanel>
+        </ScrollViewer>
 
-                        <Canvas>
-                            <local:MessageUC x:Name="messageBox" Width="350"
-                                     Height="50"  
-                                    Visibility="Hidden"
-                                     Canvas.Left="145"
-                                         FontSize="16"
-                                         HorizontalContentAlignment="Right">
-
-                            </local:MessageUC>
-                        </Canvas>
-                    </Grid>
-                </Canvas>
-            </ScrollViewer>
-        </Border>
 
         <Border  Grid.Row="2" BorderBrush="WhiteSmoke" BorderThickness="2">
             <Grid Grid.Row="2" Background="WhiteSmoke">
 
 
-                <TextBox Name="myTxtBox" VerticalContentAlignment="Center" Foreground="Black"
+                <TextBox  Name="myTxtBox" VerticalContentAlignment="Center" Foreground="Black"
                      FontSize="18" Margin="0,0,45,0">
                 </TextBox>
 
@@ -59,6 +51,7 @@
                     Send
                 </Button>
 
+              
             </Grid>
         </Border>
 

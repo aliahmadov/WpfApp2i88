@@ -20,9 +20,27 @@ namespace WpfApp2
     /// </summary>
     public partial class MessageUC : UserControl
     {
+
+
+
+
+
+        public string MessageText
+        {
+            get { return (string)GetValue(MessageTextProperty); }
+            set { SetValue(MessageTextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MessageText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MessageTextProperty =
+            DependencyProperty.Register("MessageText", typeof(string), typeof(MessageUC), new PropertyMetadata(default(MessageUC)));
+
+
+
         public MessageUC()
         {
             InitializeComponent();
+            DataContext = this;
         }
     }
 }
